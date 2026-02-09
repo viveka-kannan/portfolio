@@ -1,0 +1,344 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --terminal-green: 34 197 94;
+    --terminal-amber: 251 191 36;
+    --terminal-red: 239 68 68;
+    --terminal-blue: 59 130 246;
+    --terminal-purple: 168 85 247;
+    --terminal-cyan: 34 211 238;
+    --terminal-pink: 236 72 153;
+    
+    --syntax-keyword: 198 120 221;
+    --syntax-string: 152 195 121;
+    --syntax-number: 209 154 102;
+    --syntax-function: 97 175 239;
+    --syntax-comment: 92 99 112;
+    --syntax-variable: 224 108 117;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Reduced motion support */
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+    
+    *,
+    ::before,
+    ::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+      scroll-behavior: auto !important;
+    }
+  }
+
+  body {
+    @apply bg-dark-950 text-dark-100 antialiased;
+    font-feature-settings: "rlig" 1, "calt" 1, "liga" 1;
+  }
+
+  /* Selection - terminal green */
+  ::selection {
+    @apply bg-terminal-green/30 text-white;
+  }
+
+  /* Scrollbar - minimal coder style */
+  ::-webkit-scrollbar {
+    @apply w-2 h-2;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-dark-900;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply bg-dark-700 rounded-full;
+  }
+
+  ::-webkit-scrollbar-thumb:hover {
+    @apply bg-dark-600;
+  }
+
+  /* Focus visible - terminal green glow */
+  :focus-visible {
+    @apply outline-none ring-1 ring-terminal-green/50 ring-offset-1 ring-offset-dark-950;
+  }
+}
+
+@layer components {
+  /* Container */
+  .container-custom {
+    @apply w-full max-w-6xl mx-auto px-4 sm:px-6;
+  }
+
+  /* Code/terminal gradient text */
+  .gradient-text {
+    @apply bg-gradient-to-r from-terminal-green via-terminal-cyan to-terminal-blue bg-clip-text text-transparent;
+  }
+
+  /* Terminal window */
+  .terminal {
+    @apply bg-dark-950 rounded-lg overflow-hidden border border-dark-800;
+    box-shadow: 0 0 0 1px rgba(255,255,255,0.03), 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  .terminal-header {
+    @apply flex items-center gap-2 px-4 py-2.5 bg-dark-900/80 border-b border-dark-800;
+  }
+
+  .terminal-dot {
+    @apply w-3 h-3 rounded-full;
+  }
+
+  .terminal-title {
+    @apply ml-3 text-xs text-dark-500 font-mono;
+  }
+
+  .terminal-body {
+    @apply p-4 font-mono text-sm leading-relaxed;
+  }
+
+  /* File/folder path styling */
+  .file-path {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono bg-dark-900 rounded border border-dark-800 text-dark-400;
+  }
+
+  /* Git-style card */
+  .git-card {
+    @apply bg-dark-900/50 border border-dark-800 rounded-lg overflow-hidden;
+    @apply transition-all duration-200;
+  }
+
+  .git-card:hover {
+    @apply border-dark-700 bg-dark-900/80;
+    box-shadow: 0 0 0 1px rgba(34,197,94,0.1);
+  }
+
+  .git-card-header {
+    @apply flex items-center gap-3 px-4 py-3 border-b border-dark-800/50;
+  }
+
+  .git-card-body {
+    @apply p-4;
+  }
+
+  /* Commit hash badge */
+  .commit-hash {
+    @apply inline-flex items-center gap-1.5 px-2 py-0.5 text-xs font-mono bg-dark-800 rounded text-terminal-amber;
+  }
+
+  /* Branch badge */
+  .branch-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono bg-terminal-purple/10 border border-terminal-purple/20 rounded text-terminal-purple;
+  }
+
+  /* Status badges */
+  .status-badge {
+    @apply inline-flex items-center gap-1 px-2 py-0.5 text-xs font-mono rounded;
+  }
+
+  .status-badge-success {
+    @apply bg-terminal-green/10 border border-terminal-green/20 text-terminal-green;
+  }
+
+  .status-badge-warning {
+    @apply bg-terminal-amber/10 border border-terminal-amber/20 text-terminal-amber;
+  }
+
+  .status-badge-error {
+    @apply bg-terminal-red/10 border border-terminal-red/20 text-terminal-red;
+  }
+
+  .status-badge-info {
+    @apply bg-terminal-blue/10 border border-terminal-blue/20 text-terminal-blue;
+  }
+
+  /* Syntax highlighting colors for UI */
+  .syntax-keyword { color: rgb(var(--syntax-keyword)); }
+  .syntax-string { color: rgb(var(--syntax-string)); }
+  .syntax-number { color: rgb(var(--syntax-number)); }
+  .syntax-function { color: rgb(var(--syntax-function)); }
+  .syntax-comment { color: rgb(var(--syntax-comment)); }
+  .syntax-variable { color: rgb(var(--syntax-variable)); }
+
+  /* Line numbers */
+  .line-numbers {
+    @apply text-dark-600 text-right select-none pr-4 border-r border-dark-800;
+  }
+
+  /* Code line hover */
+  .code-line {
+    @apply transition-colors duration-100;
+  }
+
+  .code-line:hover {
+    @apply bg-dark-800/30;
+  }
+
+  /* Terminal cursor */
+  .terminal-cursor {
+    @apply inline-block w-2 h-4 bg-terminal-green ml-0.5;
+    animation: cursor-blink 1s step-end infinite;
+  }
+
+  @keyframes cursor-blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+  }
+
+  /* Config/package.json style */
+  .config-block {
+    @apply bg-dark-950 border border-dark-800 rounded-lg overflow-hidden font-mono text-sm;
+  }
+
+  .config-key {
+    @apply text-terminal-cyan;
+  }
+
+  .config-value {
+    @apply text-syntax-string;
+  }
+
+  .config-bracket {
+    @apply text-dark-400;
+  }
+
+  /* Diff styling */
+  .diff-add {
+    @apply bg-terminal-green/10 border-l-2 border-terminal-green;
+  }
+
+  .diff-remove {
+    @apply bg-terminal-red/10 border-l-2 border-terminal-red;
+  }
+
+  /* Button styles - coder aesthetic */
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 px-4 py-2 text-sm font-mono rounded-md transition-all duration-200;
+    @apply focus:outline-none focus-visible:ring-1 focus-visible:ring-terminal-green/50;
+  }
+
+  .btn-primary {
+    @apply btn bg-terminal-green/10 border border-terminal-green/30 text-terminal-green;
+    @apply hover:bg-terminal-green/20 hover:border-terminal-green/50;
+  }
+
+  .btn-secondary {
+    @apply btn bg-dark-800 border border-dark-700 text-dark-300;
+    @apply hover:bg-dark-700 hover:text-dark-100;
+  }
+
+  .btn-ghost {
+    @apply btn bg-transparent text-dark-400;
+    @apply hover:bg-dark-800 hover:text-dark-200;
+  }
+
+  /* Section title - monospace, clean */
+  .section-title {
+    @apply text-2xl sm:text-3xl font-mono font-bold tracking-tight text-white;
+  }
+
+  .section-subtitle {
+    @apply text-base text-dark-400 font-mono max-w-2xl;
+  }
+
+  /* Markdown/README style content */
+  .readme-content h1 {
+    @apply text-2xl font-bold text-white mb-4 pb-2 border-b border-dark-800 font-mono;
+  }
+
+  .readme-content h2 {
+    @apply text-xl font-bold text-white mt-8 mb-3 pb-1 border-b border-dark-800/50 font-mono;
+  }
+
+  .readme-content h3 {
+    @apply text-lg font-semibold text-dark-200 mt-6 mb-2 font-mono;
+  }
+
+  .readme-content p {
+    @apply mb-4 text-dark-400 leading-relaxed;
+  }
+
+  .readme-content code {
+    @apply px-1.5 py-0.5 bg-dark-800 rounded text-terminal-cyan text-sm font-mono;
+  }
+
+  .readme-content pre {
+    @apply p-4 bg-dark-900 rounded-lg border border-dark-800 overflow-x-auto mb-4;
+  }
+
+  .readme-content pre code {
+    @apply bg-transparent p-0;
+  }
+
+  .readme-content ul {
+    @apply list-none space-y-1 mb-4;
+  }
+
+  .readme-content ul li {
+    @apply flex items-start gap-2 text-dark-400;
+  }
+
+  /* Grid background pattern */
+  .grid-bg {
+    background-image: 
+      linear-gradient(rgba(255,255,255,0.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.02) 1px, transparent 1px);
+    background-size: 24px 24px;
+  }
+
+  /* Prose customizations */
+  .prose-custom {
+    @apply prose prose-invert max-w-none prose-headings:font-mono
+      prose-a:text-terminal-cyan prose-a:no-underline hover:prose-a:underline
+      prose-code:text-terminal-cyan prose-code:bg-dark-800 prose-code:px-1.5 prose-code:py-0.5 prose-code:rounded
+      prose-pre:bg-dark-900 prose-pre:border prose-pre:border-dark-800;
+  }
+}
+
+@layer utilities {
+  /* Text balance */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Hide scrollbar */
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+
+  /* Glow effects */
+  .glow-green {
+    box-shadow: 0 0 20px rgba(34, 197, 94, 0.15);
+  }
+
+  .glow-blue {
+    box-shadow: 0 0 20px rgba(59, 130, 246, 0.15);
+  }
+
+  .glow-purple {
+    box-shadow: 0 0 20px rgba(168, 85, 247, 0.15);
+  }
+
+  /* Fade mask for overflow */
+  .fade-mask-b {
+    mask-image: linear-gradient(to bottom, black 80%, transparent);
+  }
+
+  .fade-mask-r {
+    mask-image: linear-gradient(to right, black 80%, transparent);
+  }
+}
